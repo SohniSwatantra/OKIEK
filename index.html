@@ -255,6 +255,90 @@
             color: var(--gold);
         }
 
+        /* === FORM MODAL === */
+        .form-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .form-modal {
+            position: relative;
+            width: 90%;
+            max-width: 700px;
+            height: 85vh;
+            max-height: 700px;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .form-modal-overlay.active .form-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .form-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(26, 26, 26, 0.8);
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .form-modal-close:hover {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        .form-modal iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Pulse animation on CTA */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(200, 169, 81, 0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(200, 169, 81, 0); }
+        }
+
+        .btn-primary.btn-cta {
+            animation: pulse-gold 2.5s ease-in-out infinite;
+        }
+
+        .btn-primary.btn-cta:hover {
+            animation: none;
+        }
+
         /* === SCROLL INDICATOR === */
         .scroll-indicator {
             position: absolute;
@@ -855,7 +939,7 @@
                 Een revolutionaire filosofie voor culinair prestatiemanagement, rendement en ambachtelijkheid.
             </p>
             <div class="hero-cta">
-                <a href="#trias" class="btn btn-primary">Ontdek de filosofie</a>
+                <button onclick="openFormModal()" class="btn btn-primary btn-cta">Ontdek de filosofie</button>
                 <a href="#hoofdstukken" class="btn btn-outline">Bekijk de inhoud</a>
             </div>
         </div>
@@ -863,6 +947,14 @@
             <div class="mouse"><div class="wheel"></div></div>
         </div>
     </header>
+
+    <!-- FORM MODAL -->
+    <div class="form-modal-overlay" id="formModal">
+        <div class="form-modal">
+            <button class="form-modal-close" onclick="closeFormModal()">&times;</button>
+            <iframe id="formIframe" src="" loading="lazy" allow="camera; microphone"></iframe>
+        </div>
+    </div>
 
     <!-- OVER OKIEK -->
     <section class="about" id="over">
@@ -1206,6 +1298,33 @@
                     document.getElementById('navbar').classList.remove('open');
                 }
             });
+        });
+
+        // Form modal
+        function openFormModal() {
+            const modal = document.getElementById('formModal');
+            const iframe = document.getElementById('formIframe');
+            if (!iframe.src || iframe.src === window.location.href) {
+                iframe.src = 'https://app.rapidforms.co/p/bf1166';
+            }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFormModal() {
+            const modal = document.getElementById('formModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('formModal').addEventListener('click', function(e) {
+            if (e.target === this) closeFormModal();
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeFormModal();
         });
 
         // Fade in hero video when loaded
