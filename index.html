@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKIEK — Ondernemend Koken is een Kunst</title>
+    <style>
+        /* === RESET & BASE === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold: #C8A951;
+            --gold-light: #E8D48B;
+            --dark: #1A1A1A;
+            --darker: #111111;
+            --charcoal: #2A2A2A;
+            --cream: #FAF7F0;
+            --cream-dark: #F0EBE0;
+            --text: #333333;
+            --text-light: #666666;
+            --white: #FFFFFF;
+            --red-accent: #8B2500;
+            --green-herb: #4A6741;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: var(--text);
+            background: var(--cream);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, h4 {
+            font-family: 'Georgia', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* === NAVIGATION === */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        nav .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-decoration: none;
+        }
+
+        nav .logo span {
+            color: var(--white);
+            font-weight: 300;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        nav ul li a:hover { color: var(--gold); }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--gold);
+            margin: 6px 0;
+            transition: 0.3s;
+        }
+
+        /* === HERO === */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: var(--darker);
+            color: var(--white);
+            padding: 6rem 2rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero-video-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hero-video-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        .hero-video-wrap video.loaded {
+            opacity: 1;
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(135deg, rgba(17, 17, 17, 0.7), rgba(42, 42, 42, 0.6)),
+                radial-gradient(ellipse at 20% 50%, rgba(200, 169, 81, 0.1), transparent 60%);
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--cream), transparent);
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.5rem;
+            font-size: 0.85rem;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(200, 169, 81, 0.3);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--white);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* === SCROLL INDICATOR === */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .scroll-indicator .mouse {
+            width: 26px;
+            height: 40px;
+            border: 2px solid rgba(200, 169, 81, 0.5);
+            border-radius: 13px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .scroll-indicator .mouse .wheel {
+            width: 3px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: scroll 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0.3; transform: translateY(8px); }
+        }
+
+        /* === SECTIONS === */
+        section { padding: 6rem 2rem; }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 700px;
+            line-height: 1.8;
+        }
+
+        /* === OVER OKIEK (ABOUT) === */
+        .about {
+            background: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 400px;
+            background: var(--dark);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-visual .number-display {
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--gold);
+            opacity: 0.15;
+            position: absolute;
+        }
+
+        .about-visual .stat-overlay {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .about-visual .stat-overlay .big-number {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .about-visual .stat-overlay p {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .about-text h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            color: var(--dark);
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .about-text .author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--cream-dark);
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .author-info .name {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .author-info .title {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* === TRIAS CUISINICA (3 PILLARS) === */
+        .trias {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        .trias .section-title { color: var(--white); }
+        .trias .section-description { color: rgba(255, 255, 255, 0.6); }
+
+        .trias-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .trias-card {
+            background: var(--charcoal);
+            padding: 2.5rem 2rem;
+            border-top: 3px solid var(--gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .trias-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .trias-card .card-number {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .trias-card h3 {
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .trias-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .trias-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .trias-card ul li {
+            padding: 0.4rem 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .trias-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        /* === HOOFDSTUKKEN (CHAPTERS) === */
+        .chapters {
+            background: var(--cream);
+        }
+
+        .chapter-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            transition: all 0.3s ease;
+        }
+
+        .chapter-item:hover {
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(200, 169, 81, 0.1);
+        }
+
+        .chapter-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            min-width: 50px;
+        }
+
+        .chapter-content h4 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-content p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* === CLIC FACTOR === */
+        .clic {
+            background: var(--white);
+        }
+
+        .clic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .clic-formula {
+            background: var(--dark);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .clic-formula .formula-label {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .clic-formula .formula {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .clic-formula .formula-part {
+            text-align: center;
+        }
+
+        .clic-formula .formula-part .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .clic-formula .formula-part .label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .clic-formula .formula-sign {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+        }
+
+        .clic-text h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            color: var(--dark);
+        }
+
+        .clic-text p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: var(--cream);
+            border-left: 3px solid var(--gold);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .highlight-box p {
+            font-style: italic;
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* === QUOTE === */
+        .quote-section {
+            background:
+                linear-gradient(135deg, rgba(17, 17, 17, 0.95), rgba(42, 42, 42, 0.9)),
+                radial-gradient(ellipse at 50% 50%, rgba(200, 169, 81, 0.08), transparent 70%);
+            background-color: var(--darker);
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .quote-section blockquote {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote-section blockquote .quote-mark {
+            font-size: 4rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .quote-section blockquote p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--white);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .quote-section blockquote cite {
+            font-style: normal;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        /* === SMARTCUISINE (FEATURES) === */
+        .features {
+            background: var(--cream);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            padding: 2rem;
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-item h4 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-item p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background: var(--darker);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer-brand .logo span {
+            color: var(--white);
+            font-weight: 300;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-width: 350px;
+        }
+
+        .footer-links h4 {
+            color: var(--white);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links ul li a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links ul li a:hover { color: var(--gold); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            font-size: 0.8rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .about-grid,
+            .clic-grid { grid-template-columns: 1fr; }
+
+            .trias-grid,
+            .features-grid { grid-template-columns: 1fr; }
+
+            .chapter-list { grid-template-columns: 1fr; }
+
+            .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+
+            nav ul { display: none; }
+            .mobile-toggle { display: block; }
+
+            nav.open ul {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(26, 26, 26, 0.98);
+                padding: 2rem;
+                gap: 1rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            section { padding: 4rem 1.5rem; }
+
+            .hero { padding: 5rem 1.5rem 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="logo">OKIEK <span>| SmartCuisine</span></a>
+            <button class="mobile-toggle" onclick="this.closest('nav').classList.toggle('open')">
+                <span></span><span></span><span></span>
+            </button>
+            <ul>
+                <li><a href="#over">Over</a></li>
+                <li><a href="#trias">Trias Cuisinica</a></li>
+                <li><a href="#hoofdstukken">Inhoud</a></li>
+                <li><a href="#clic">CLIC-factor</a></li>
+                <li><a href="#smartcuisine">SmartCuisine</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-video-wrap">
+            <video id="heroVideo" autoplay muted loop playsinline>
+                <source src="okiek-ad.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">De filosofie van Anton Dijk</div>
+            <h1>Ondernemend Koken<br>is een <em>Kunst</em></h1>
+            <p class="hero-subtitle">De Trias Cuisinica</p>
+            <p class="hero-description">
+                230 artikelen die gezamenlijk het professionele kookproces beschrijven.
+                Een revolutionaire filosofie voor culinair prestatiemanagement, rendement en ambachtelijkheid.
+            </p>
+            <div class="hero-cta">
+                <a href="#trias" class="btn btn-primary">Ontdek de filosofie</a>
+                <a href="#hoofdstukken" class="btn btn-outline">Bekijk de inhoud</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"><div class="wheel"></div></div>
+        </div>
+    </header>
+
+    <!-- OVER OKIEK -->
+    <section class="about" id="over">
+        <div class="section-inner">
+            <div class="section-label">Over OKIEK</div>
+            <h2 class="section-title">Wat is OKIEK?</h2>
+            <p class="section-description">
+                Een uitgebreide kennisbank die koks en ondernemers doet beseffen dat het kookproces alle hens aan dek vereist.
+            </p>
+
+            <div class="about-grid">
+                <div class="about-visual">
+                    <div class="number-display">230</div>
+                    <div class="stat-overlay">
+                        <div class="big-number">230</div>
+                        <p>Artikelen</p>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>De SmartKnowledge Database</h3>
+                    <p>
+                        OKIEK is een reeks van 230 artikelen die gezamenlijk het professionele kookproces beschrijven.
+                        Ieder artikel bevat een professionele culinaire foto, een pakkende titel, een korte omschrijving
+                        en minstens 10 bijbehorende recepten.
+                    </p>
+                    <p>
+                        Alle artikelen zijn geschreven in een toegankelijke stijl en zijn opgenomen in een interactieve
+                        database. Het doel: geld verdienen met de professionele keuken door ondernemend koken
+                        tot een kunst te maken.
+                    </p>
+                    <p>
+                        OKIEK is beschikbaar als hard-copy en in combinatie met het digitale SmartCuisine receptenboek.
+                    </p>
+                    <div class="author">
+                        <div class="author-avatar">AD</div>
+                        <div class="author-info">
+                            <div class="name">Anton Dijk</div>
+                            <div class="title">SVH Meesterkok &amp; Oprichter SmartCuisine</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRIAS CUISINICA -->
+    <section class="trias" id="trias">
+        <div class="section-inner">
+            <div class="section-label">De drie hoofdkrachten</div>
+            <h2 class="section-title">De Trias Cuisinica</h2>
+            <p class="section-description">
+                Drie krachten die — zowel afzonderlijk als verenigd — de sleutel vormen tot een goed functionerende keuken.
+                De weegschaal als symbool: het draait om balans.
+            </p>
+
+            <div class="trias-grid">
+                <div class="trias-card">
+                    <div class="card-number">Kracht 01</div>
+                    <h3>Culinaire Intelligentie</h3>
+                    <p>
+                        Controle over uw keuken resulteert in constante smaak en rendement.
+                        Software meet en registreert processen; het culinair marketingplan geeft richting.
+                    </p>
+                    <ul>
+                        <li>Culinair marketingplan</li>
+                        <li>Software &amp; procesregistratie</li>
+                        <li>Eenmalige &amp; repeterende intelligentie</li>
+                        <li>Prestatie-indicatoren &amp; succesfactoren</li>
+                    </ul>
+                </div>
+
+                <div class="trias-card">
+                    <div class="card-number">Kracht 02</div>
+                    <h3>Het Recept</h3>
+                    <p>
+                        De schakel tussen financiele prestaties en culinaire kwaliteit.
+                        Het recept is het hart van uw keukenadministratie en de blauwdruk voor ieder bereidingsproces.
+                    </p>
+                    <ul>
+                        <li>Koppeling kok &amp; ondernemer</li>
+                        <li>Ingredientenregistratie</li>
+                        <li>MEP- &amp; Cook-Off recepten</li>
+                        <li>Integrale kostprijsberekening</li>
+                    </ul>
+                </div>
+
+                <div class="trias-card">
+                    <div class="card-number">Kracht 03</div>
+                    <h3>De CooksPit</h3>
+                    <p>
+                        De werkplek van uw kok. Hoe compacter de werkomgeving,
+                        hoe sneller en efficienter de keuken functioneert.
+                    </p>
+                    <ul>
+                        <li>Routing &amp; lay-out</li>
+                        <li>Apparatuur &amp; opslag</li>
+                        <li>Keukenprocessen &amp; planning</li>
+                        <li>MEP &amp; Cook-Off scheiding</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTE -->
+    <section class="quote-section">
+        <blockquote>
+            <div class="quote-mark">&ldquo;</div>
+            <p>
+                Koken is het uiterst efficient omgaan met goede ingredienten
+                om met het resultaat van de bereiding een optimaal gevoel van
+                culinaire prestatie op te wekken bij de gast.
+            </p>
+            <cite>Anton Dijk — SVH Meesterkok</cite>
+        </blockquote>
+    </section>
+
+    <!-- HOOFDSTUKKEN -->
+    <section class="chapters" id="hoofdstukken">
+        <div class="section-inner">
+            <div class="section-label">Inhoud</div>
+            <h2 class="section-title">6 Hoofdstukken</h2>
+            <p class="section-description">
+                OKIEK is opgebouwd uit zes hoofdstukken, elk met relevante sub-hoofdstukken en artikelen.
+                Samen vormen ze een compleet kader voor culinair prestatiemanagement.
+            </p>
+
+            <div class="chapter-list">
+                <div class="chapter-item">
+                    <div class="chapter-number">01</div>
+                    <div class="chapter-content">
+                        <h4>Trias Cuisinica</h4>
+                        <p>De hedendaagse problematiek, introductie van de drie hoofdkrachten, vorming van de culinaire vakman, communicatie en duurzaamheid.</p>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-number">02</div>
+                    <div class="chapter-content">
+                        <h4>Culinaire Intelligentie</h4>
+                        <p>Eenmalige en repeterende culinaire intelligentie, probleemanalyse, het culinair marketingplan en strategieen.</p>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-number">03</div>
+                    <div class="chapter-content">
+                        <h4>Culinair Marketingplan</h4>
+                        <p>De 6 P's, keukenprofiel, kookstijlen, keukenorganisatie, analyse en exploitatiebegroting.</p>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-number">04</div>
+                    <div class="chapter-content">
+                        <h4>Repeterende Culinaire Intelligentie</h4>
+                        <p>Calculatie, salesmix, CLIC-factor, menu-engineering, prestatie-indicatoren en software.</p>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-number">05</div>
+                    <div class="chapter-content">
+                        <h4>De CooksPit</h4>
+                        <p>Inrichting, routing, apparatuur, keukenprocessen, MEP en Cook-Off, portioneren en procesmethodieken.</p>
+                    </div>
+                </div>
+
+                <div class="chapter-item">
+                    <div class="chapter-number">06</div>
+                    <div class="chapter-content">
+                        <h4>Het Recept</h4>
+                        <p>Recepttypes, noteren, stapteksten, bestelproces, houdbaarheid, kooktechnieken, kwaliteit en hygiene.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLIC-FACTOR -->
+    <section class="clic" id="clic">
+        <div class="section-inner">
+            <div class="section-label">Innovatie</div>
+            <h2 class="section-title">De CLIC-factor</h2>
+            <p class="section-description">
+                Een revolutionaire methode om de werkelijke kostprijs van uw gerechten te berekenen.
+            </p>
+
+            <div class="clic-grid">
+                <div class="clic-formula">
+                    <div class="formula-label">Calculated Labour Integrated Cost price</div>
+                    <div class="formula">
+                        <div class="formula-part">
+                            <div class="value">35%</div>
+                            <div class="label">Ingredienten</div>
+                        </div>
+                        <div class="formula-sign">+</div>
+                        <div class="formula-part">
+                            <div class="value">40%</div>
+                            <div class="label">Arbeidskosten</div>
+                        </div>
+                        <div class="formula-sign">=</div>
+                        <div class="formula-part">
+                            <div class="value">CLIC</div>
+                            <div class="label">Integrale kostprijs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clic-text">
+                    <h3>Meer dan alleen ingredientenkosten</h3>
+                    <p>
+                        De traditionele calculatiemethode kijkt alleen naar de inkoopprijs van ingredienten.
+                        Maar de hoeveelheid arbeid die in een gerecht gaat is vaak bepalender voor de uiteindelijke prijs.
+                    </p>
+                    <p>
+                        De CLIC-factor berekent de integrale kostprijs: ingredienten plus arbeid.
+                        Met software zoals SmartCuisine kunt u dit met een druk op de knop bepalen en
+                        een prognose maken van arbeidsuren bij elke willekeurige receptmix.
+                    </p>
+                    <div class="highlight-box">
+                        <p>
+                            &ldquo;Een optimale culinaire prestatie wordt nooit geleverd door een recept,
+                            maar altijd door een mix van recepten en gerechten.&rdquo;
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMARTCUISINE FEATURES -->
+    <section class="features" id="smartcuisine">
+        <div class="section-inner">
+            <div class="section-label">SmartCuisine Platform</div>
+            <h2 class="section-title">Digitaal Receptenboek &amp; Meer</h2>
+            <p class="section-description">
+                Alle OKIEK-artikelen en recepten zijn beschikbaar in een interactieve database
+                met geavanceerde functionaliteiten.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">&#9878;</div>
+                    <h4>Interactieve Recepten</h4>
+                    <p>Ieder gerecht is gecalculeerd, printbaar en online te bekijken. Compleet met stapteksten en bereidingsinstructies.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">&#9881;</div>
+                    <h4>Automatische Calculatie</h4>
+                    <p>CLIC-factor berekening, salesmix-analyse en integrale kostprijsbepaling met een druk op de knop.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">&#9733;</div>
+                    <h4>Menukaart Beheer</h4>
+                    <p>Gerechten op menukaarten zetten, Mise en place lijsten genereren en bestellingen aanmaken vanuit het recept.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">&#128269;</div>
+                    <h4>Doorzoekbare Database</h4>
+                    <p>Zoek op steekwoorden door alle hoofdstukken, sub-hoofdstukken en artikelen van de complete OKIEK-database.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">&#128200;</div>
+                    <h4>Prestatie-indicatoren</h4>
+                    <p>Meet en registreer culinaire succesfactoren. Monitor uw keukenprocessen en optimaliseer uw rendement.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">&#128101;</div>
+                    <h4>Dienstrooster Planning</h4>
+                    <p>Genereer automatisch dienstroosters op basis van receptmixen en verwachte arbeidsuren per gerecht.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">OKIEK <span>| SmartCuisine</span></div>
+                    <p>
+                        Ondernemend Koken is een Kunst. Een filosofie van Anton Dijk,
+                        SVH Meesterkok, gewijd aan het verbeteren van culinair prestatiemanagement
+                        in professionele keukens wereldwijd.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Hoofdstukken</h4>
+                    <ul>
+                        <li><a href="#trias">Trias Cuisinica</a></li>
+                        <li><a href="#hoofdstukken">Culinaire Intelligentie</a></li>
+                        <li><a href="#clic">CLIC-factor</a></li>
+                        <li><a href="#smartcuisine">SmartCuisine</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SmartCuisine</h4>
+                    <ul>
+                        <li><a href="#">Receptenboek</a></li>
+                        <li><a href="#">Database</a></li>
+                        <li><a href="#">Software</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 OKIEK / SmartCuisine. Alle rechten voorbehouden.</p>
+                <p>Een initiatief van Anton Dijk, SVH Meesterkok</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar shrink on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.padding = '0 2rem';
+                nav.style.background = 'rgba(17, 17, 17, 0.98)';
+            } else {
+                nav.style.padding = '0 2rem';
+                nav.style.background = 'rgba(26, 26, 26, 0.95)';
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu
+                    document.getElementById('navbar').classList.remove('open');
+                }
+            });
+        });
+
+        // Fade in hero video when loaded
+        const heroVideo = document.getElementById('heroVideo');
+        if (heroVideo) {
+            heroVideo.addEventListener('canplay', () => {
+                heroVideo.classList.add('loaded');
+            });
+            // Fallback if already loaded
+            if (heroVideo.readyState >= 3) {
+                heroVideo.classList.add('loaded');
+            }
+        }
+
+        // Animate elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.trias-card, .chapter-item, .feature-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
